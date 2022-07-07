@@ -18,6 +18,10 @@
           <td><%= @group.introduction %></td>
         <% if @group.owner_id == current_user.id %>
           <td><%= link_to 'Edit',edit_group_path(@group.id) ,class: "btn btn-sm btn-success edit_group_#{@group.id}" %></td>
+        <% elsif @group.users.include?(current_user) %>
+          <td> <%= link_to 'Leave this group',group_leave_path(@group) ,method: :delete,class: "btn btn-sm btn-danger group_join_#{@group.id}" %></td>
+        <% else %>
+          <td><%= link_to 'Join this group',group_join_path(@group) ,class: "btn btn-sm btn-success group_join_#{@group.id}" %></td>
         <% end %>
         </tr>
       </table>
