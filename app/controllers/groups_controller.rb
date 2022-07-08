@@ -11,12 +11,13 @@ class GroupsController < ApplicationController
     @new_book = Book.new
   end
 
+  # 参加機能
   def join
     @group = Group.find(params[:group_id])
     @group.users << current_user
     redirect_to  groups_path
   end
-
+  # 離脱機能
   def leave
     @group = Group.find(params[:group_id])
     @group.users.delete(current_user)
@@ -49,6 +50,20 @@ class GroupsController < ApplicationController
     else
       render :edit
     end
+  end
+
+
+  #メール送信機能
+  def new_mail
+    @group = Group.find(params[:group_id])
+  end
+
+  def send_mail
+    @group = Group.find(params[:group_id])
+    group_users = @group.users
+    @mail_title = params[:mail_title]
+    @mail_content = params[:mail_content]
+    NoticeMailer.send_mail(@mail_title, @mail_content,group_users).deliver
   end
 
 
